@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using TMPro;
 
 
 #if UNITY_EDITOR
@@ -15,9 +15,23 @@ using UnityEditor;
 public class MenuUIHandler : MonoBehaviour
 {
     [SerializeField]
-    private InputField inputPlayerName;
+    private TMP_InputField inputPlayerName;
 
+    [SerializeField]
+    private TextMeshProUGUI highScoreText;
 
+    private void Start()
+    {
+        //Check if we are in the menu scene (MenuUIHandler also used in the highscore scene)
+        if (inputPlayerName != null && highScoreText != null)
+        {
+
+            var highScorePlayer = DataManager.Instance.highScorePlayer;
+            var highscore = DataManager.Instance.highScore;
+
+            highScoreText.text = $"Top Score : {highScorePlayer} [ {highscore} ]";
+        }
+    }
 
     public void StartGame()
     {
@@ -33,6 +47,22 @@ public class MenuUIHandler : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void Clear()
+    {
+        DataManager.Instance.ClearHighScore();
+        highScoreText.text = $"Top Score : / [ 0 ]";
+    }
+
+    public void OpenHighScores()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void ReturnMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
 

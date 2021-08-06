@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
 
-    public Text ScoreText;
+    public TextMeshProUGUI ScoreText;
+    public TextMeshProUGUI highScoreText;
     public GameObject GameOverText;
 
     private bool m_Started = false;
@@ -35,6 +37,9 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        DisplayHighscore(false);
+
     }
 
     private void Update()
@@ -61,10 +66,20 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        if (m_Points > DataManager.Instance.highScore)
+        {
+            DataManager.Instance.SetHighScore(DataManager.Instance.playerName, m_Points);
+            DisplayHighscore(true);
+        }
+
+    }
+
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Current Score : [ {m_Points} ]";
         // DataManager.Instance.playerScore = m_Points;
     }
 
@@ -78,6 +93,18 @@ public class MainManager : MonoBehaviour
         if (m_Points > DataManager.Instance.highScore)
         {
             DataManager.Instance.SetHighScore(DataManager.Instance.playerName, m_Points);
+            DisplayHighscore(false);
         }
     }
+
+    public void DisplayHighscore(bool isNewHighscore)
+    {
+        var highScorePlayer = DataManager.Instance.highScorePlayer;
+        var highScore = DataManager.Instance.highScore;
+        if (isNewHighscore)
+            highScoreText.text = $"New Best Score : {highScorePlayer} [ {highScore} ]";
+        else
+            highScoreText.text = $"Best Score : {highScorePlayer} [ {highScore} ]";
+    }
 }
+

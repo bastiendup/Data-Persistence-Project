@@ -49,19 +49,37 @@ public class DataManager : MonoBehaviour
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {
+
             string json = File.ReadAllText(path);
 
-            HighScoreData data = new HighScoreData();
-            data.highScorePlayer = playerName;
-            data.highScore = highScore;
+            HighScoreData data = JsonUtility.FromJson<HighScoreData>(json);
+            highScorePlayer = data.highScorePlayer;
+            highScore = data.highScore;
+
+            Debug.Log(playerName);
+            Debug.Log(highScore);
         }
+
+    }
+
+    public void ClearHighScore()
+    {
+        HighScoreData data = new HighScoreData();
+        data.highScorePlayer = "/";
+        data.highScore = 0;
+
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
 
     public void SetHighScore(string name, int score)
     {
-        Debug.Log("SaveHighscore");
+        Debug.Log("New highscore set : " + name + ", " + score);
         highScorePlayer = name;
         highScore = score;
         SaveHighscore();
     }
+
+    
 }
