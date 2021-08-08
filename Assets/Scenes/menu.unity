@@ -726,6 +726,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputPlayerName: {fileID: 1765039703}
   highScoreText: {fileID: 1641142477}
+  highScoreHolder: {fileID: 0}
+  scoreEntryPrefab: {fileID: 0}
 --- !u!1 &456009660
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,7 +1758,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -50, y: 0, z: -50, w: 0}
+  m_margin: {x: -200, y: 0, z: -200, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2008,6 +2010,7 @@ MonoBehaviour:
   playerName: 
   highScore: 0
   highScorePlayer: 
+  maxScoreboardEntries: 10
 --- !u!4 &1926612735
 Transform:
   m_ObjectHideFlags: 0

@@ -37,9 +37,7 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
-
         DisplayHighscore(false);
-
     }
 
     private void Update()
@@ -70,9 +68,9 @@ public class MainManager : MonoBehaviour
     {
         if (m_Points > DataManager.Instance.highScore)
         {
-            DataManager.Instance.SetHighScore(DataManager.Instance.playerName, m_Points);
             DisplayHighscore(true);
         }
+        
 
     }
 
@@ -80,31 +78,30 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Current Score : [ {m_Points} ]";
-        // DataManager.Instance.playerScore = m_Points;
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-
-        //Check if the current score is the new highscore
-        //If so set new highscore data
-        if (m_Points > DataManager.Instance.highScore)
-        {
-            DataManager.Instance.SetHighScore(DataManager.Instance.playerName, m_Points);
-            DisplayHighscore(false);
-        }
+        DataManager.Instance.AddDataFromGame(DataManager.Instance.playerName, m_Points);
     }
 
     public void DisplayHighscore(bool isNewHighscore)
     {
-        var highScorePlayer = DataManager.Instance.highScorePlayer;
-        var highScore = DataManager.Instance.highScore;
         if (isNewHighscore)
+        {
+            var highScorePlayer = DataManager.Instance.playerName;
+            var highScore = m_Points;
             highScoreText.text = $"New Best Score : {highScorePlayer} [ {highScore} ]";
+        }
         else
+        {
+            var highScorePlayer = DataManager.Instance.highScorePlayer;
+            var highScore = DataManager.Instance.highScore;
             highScoreText.text = $"Best Score : {highScorePlayer} [ {highScore} ]";
+        }
     }
+
 }
 

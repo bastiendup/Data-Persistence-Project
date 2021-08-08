@@ -20,17 +20,23 @@ public class MenuUIHandler : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI highScoreText;
 
-    private void Start()
+    [SerializeField]
+    private Transform highScoreHolder;
+
+    [SerializeField]
+    private GameObject scoreEntryPrefab;
+
+    private void Awake()
     {
         //Check if we are in the menu scene (MenuUIHandler also used in the highscore scene)
         if (inputPlayerName != null && highScoreText != null)
         {
-
-            var highScorePlayer = DataManager.Instance.highScorePlayer;
-            var highscore = DataManager.Instance.highScore;
-
-            highScoreText.text = $"Top Score : {highScorePlayer} [ {highscore} ]";
+            UpdateHighscoreText();
         }
+
+        //Check if we're in the highscore scene
+        if (highScoreHolder != null)
+            DataManager.Instance.DisplayHighscore(highScoreHolder, scoreEntryPrefab);
     }
 
     public void StartGame()
@@ -51,8 +57,9 @@ public class MenuUIHandler : MonoBehaviour
 
     public void Clear()
     {
-        DataManager.Instance.ClearHighScore();
-        highScoreText.text = $"Top Score : / [ 0 ]";
+        DataManager.Instance.ClearHighscores();
+        DataManager.Instance.DisplayHighscore(highScoreHolder, scoreEntryPrefab);
+        DataManager.Instance.UpdateScore();
     }
 
     public void OpenHighScores()
@@ -63,6 +70,14 @@ public class MenuUIHandler : MonoBehaviour
     public void ReturnMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    private void UpdateHighscoreText()
+    {
+        var highScorePlayer = DataManager.Instance.highScorePlayer;
+            var highscore = DataManager.Instance.highScore;
+
+            highScoreText.text = $"Top Score : {highScorePlayer} [ {highscore} ]";
     }
 
 
